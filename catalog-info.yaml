@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: repositorio-con-templates
+spec:
+  targets:
+    - ./template-basico/template.yaml
+    - ./template-cookiecutter/template-yaml
