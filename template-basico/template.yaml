@@ -47,7 +47,7 @@ spec:
 
     - id: renameReadme
       name: Rename README
-      action: fs:renameReadme
+      action: fs:move
       input:
         files:
           - from: ./README.md
