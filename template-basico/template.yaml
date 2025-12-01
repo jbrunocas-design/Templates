@@ -50,8 +50,8 @@ spec:
       action: fs:rename
       input:
         files:
-          - from: ./README.md
-            to: ./${{parameters.readmeTitle}}.md
+          - from: ./template-1/README.md
+            to: ./template-1/${{parameters.readmeTitle}}.md
 
     - id: publish
       name: Publish to GitHub
