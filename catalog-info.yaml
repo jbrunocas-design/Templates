@@ -6,4 +6,4 @@ spec:
   targets:
     - ./template1-create-repo/template.yaml
     - ./template-basico/template.yaml
-    - ./template-cookiecutter/template-yaml
+    - ./template-cookiecutter/template.yaml
