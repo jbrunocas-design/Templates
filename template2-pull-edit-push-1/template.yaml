@@ -36,6 +36,7 @@ spec:
               additionalScopes:
                 github:
                   - repo
+                  - workflow
 
   steps:
     - id: fetchBase
