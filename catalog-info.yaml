@@ -6,5 +6,5 @@ spec:
   type: url
   targets:
     - ./template1-create-repo/template.yaml
-    #- ./template-basico/template.yaml
+    - ./template2-pull-edit-push1/template.yaml
     #- ./template-cookiecutter/template.yaml
