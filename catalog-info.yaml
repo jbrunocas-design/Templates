@@ -3,6 +3,7 @@ kind: Location
 metadata:
   name: repositorio-con-templates
 spec:
+  type: url
   targets:
     - ./template1-create-repo/template.yaml
     - ./template-basico/template.yaml
