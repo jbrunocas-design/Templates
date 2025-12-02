@@ -4,6 +4,6 @@ metadata:
   name: repositorio-con-templates
 spec:
   targets:
-    - ./tree/main/template1-create-repo/template.yaml
-    - ./tree/main/template-basico/template.yaml
-    - ./tree/main/template-cookiecutter/template.yaml
+    - ./template1-create-repo/template.yaml
+    - ./template-basico/template.yaml
+    - ./template-cookiecutter/template.yaml
