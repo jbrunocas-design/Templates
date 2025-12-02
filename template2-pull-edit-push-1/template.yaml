@@ -1,0 +1,66 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: pull-edit-push-1
+  title: Pull remote repo, rename readme, and create new remote repo
+  description: This template UI asks user for repo to clone, new name of readme, and creates new remote repo with changes.
+spec:
+  owner: jbrunocas-design
+  type: documentation
+
+  parameters:
+    - title: Repo Info
+      required:
+        - repoSource
+        - readmeTitle
+        - repoDestination
+      properties:
+        repoSource:
+          type: string
+          title: Remote Repo to clone from
+          placeholder: "https://github.com/OWNER/BASE_REPO"
+
+        readmeTitle:
+          type: string
+          title: new README title
+        
+        repoDestination:
+          title: New Repository
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+            requestUserCredentials:
+              secretsKey: USER_OAUTH_TOKEN
+              additionalScopes:
+                github:
+                  - repo
+
+  steps:
+    - id: fetchBase
+      name: Fetch base repo
+      action: fetch:template
+      input:
+        url: ${{parameters.repoSource}}
+        targetPath: "./"
+
+    - id: renameReadme
+      name: Rename README
+      action: fs:rename
+      input:
+        files:
+          - from: ./README.md
+            to: ./${{parameters.readmeTitle}}.md
+
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoDestination }}
+        token: ${{ secrets.USER_OAUTH_TOKEN }} 
+        
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
