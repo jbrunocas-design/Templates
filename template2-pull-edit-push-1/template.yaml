@@ -40,7 +40,7 @@ spec:
   steps:
     - id: fetchBase
       name: Fetch base repo
-      action: fetch:template
+      action: fetch:plain
       input:
         url: ${{parameters.repoSource}}
         targetPath: "./"
