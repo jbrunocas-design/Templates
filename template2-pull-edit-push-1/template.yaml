@@ -31,6 +31,7 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+              - gitlab.com
             requestUserCredentials:
               secretsKey: USER_OAUTH_TOKEN
               additionalScopes:
@@ -56,7 +57,7 @@ spec:
 
     - id: publish
       name: Publish to GitHub
-      action: publish:github
+      action: publish:repo
       input:
         repoUrl: ${{ parameters.repoDestination }}
         token: ${{ secrets.USER_OAUTH_TOKEN }} 
