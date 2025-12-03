@@ -38,6 +38,10 @@ spec:
                 github:
                   - repo
                   - workflow
+                gitlab:
+                  - api
+                  - read_user
+                  - write_repository
 
   steps:
     - id: fetchBase
