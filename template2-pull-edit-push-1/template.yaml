@@ -59,9 +59,18 @@ spec:
           - from: ./README.md
             to: ./${{parameters.readmeTitle}}.md
 
-    - id: publish
+    - id: publishGithub
       name: Publish to GitHub
-      action: publish:repo
+      if: ${{ parameters.repoDestination | parseRepoUrl | pick('host') == 'github.com'}}
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoDestination }}
+        token: ${{ secrets.USER_OAUTH_TOKEN }} 
+        
+    - id: publishGitlab
+      name: Publish to GitLab
+      if: ${{ parameters.repoDestination | parseRepoUrl | pick('host') == 'gitlab.com'}}
+      action: publish:gitlab
       input:
         repoUrl: ${{ parameters.repoDestination }}
         token: ${{ secrets.USER_OAUTH_TOKEN }} 
