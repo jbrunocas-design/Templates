@@ -1,0 +1,42 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: aws-ec2-instance1
+  title: Create a new EC2 instance
+  description: This template UI asks user for config and creates a new EC2 instance in AWS.
+spec:
+  owner: jbrunocas-design
+  type: documentation
+
+  parameters:
+    - title: EC2 instance
+      required:
+        - instanceName
+        - region
+        - repoDestination
+      properties:
+        repoDestination:
+          title: New Repository
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+              - gitlab.com
+            requestUserCredentials:
+              secretsKey: USER_OAUTH_TOKEN
+              additionalScopes:
+                github:
+                  - repo
+                  - workflow
+                gitlab:
+                  - api
+                  - read_user
+                  - write_repository
+
+  steps:
+        
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
