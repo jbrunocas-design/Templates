@@ -15,6 +15,12 @@ spec:
         - region
         - repoDestination
       properties:
+        instanceName:
+          title: EC2 Instance Name
+          type: string
+          description: Name of the EC2 instance to be created.
+        region:
+          title: AWS Region
         repoDestination:
           title: New Repository
           type: string
@@ -33,7 +39,7 @@ spec:
                   - api
                   - read_user
                   - write_repository
-
+        
   steps:
     - id: fetchBase
       name: Fetch base repo
