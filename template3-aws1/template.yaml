@@ -60,7 +60,7 @@ spec:
   steps:
     - id: fetchBase
       name: Fetch base repo
-      action: fetch:plain
+      action: fetch:template
       input:
         url: https://github.com/jbrunocas-design/template-1/tree/main
         targetPath: "./"
@@ -68,7 +68,7 @@ spec:
           InstanceName: ${{ parameters.instanceName }}
           Region: ${{ parameters.region }}
           repoUrl: ${{ parameters.repoDestination }}
-          
+
     - id: publishGithub
       name: Publish to GitHub
       if: ${{ parameters.repoDestination | parseRepoUrl | pick('host') == 'github.com'}}
