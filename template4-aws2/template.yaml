@@ -30,41 +30,6 @@ spec:
             - us-east-1
             - us-west-2
             - eu-central-1
-        # EC2 parameters
-        instanceName:
-          title: EC2 Instance Name
-          type: string
-          description: Name of the EC2 instance to be created.
-          ui:field: If
-          ui:options:
-            condition: "${{ parameters.resourceType == 'EC2' }}"
-        # S3 parameters
-        bucketName:
-          title: S3 Bucket Name
-          type: string
-          description: Name of the S3 bucket to be created.
-          ui:field: If
-          ui:options:
-            condition: "${{ parameters.resourceType == 'S3' }}"
-        # RDS parameters
-        dbInstanceIdentifier:
-          title: RDS Instance Identifier
-          type: string
-          description: Identifier for the RDS instance.
-          ui:field: If
-          ui:options:
-            condition: "${{ parameters.resourceType == 'RDS' }}"
-        dbEngine:
-          title: RDS Engine
-          type: string
-          enum:
-            - mysql
-            - postgres
-            - mariadb
-          description: Database engine for RDS.
-          ui:field: If
-          ui:options:
-            condition: "${{ parameters.resourceType == 'RDS' }}"
         repoDestination:
           title: New Repository
           type: string
@@ -83,6 +48,45 @@ spec:
                   - api
                   - read_user
                   - write_repository
+      dependencies:
+        resourceType:
+          oneOf:
+            - properties:
+                resourceType:
+                  enum: [EC2]
+                instanceName:
+                  title: EC2 Instance Name
+                  type: string
+                  description: Name of the EC2 instance to be created.
+              required:
+                - instanceName
+            - properties:
+                resourceType:
+                  enum: [S3]
+                bucketName:
+                  title: S3 Bucket Name
+                  type: string
+                  description: Name of the S3 bucket to be created.
+              required:
+                - bucketName
+            - properties:
+                resourceType:
+                  enum: [RDS]
+                dbInstanceIdentifier:
+                  title: RDS Instance Identifier
+                  type: string
+                  description: Identifier for the RDS instance.
+                dbEngine:
+                  title: RDS Engine
+                  type: string
+                  enum:
+                    - mysql
+                    - postgres
+                    - mariadb
+                  description: Database engine for RDS.
+              required:
+                - dbInstanceIdentifier
+                - dbEngine
 
   steps:
     - id: fetchBase
