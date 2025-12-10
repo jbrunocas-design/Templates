@@ -18,14 +18,14 @@ spec:
         instanceName:
           title: EC2 Instance Name
           type: string
-          enum:
-            - us-east-1
-            - us-west-2
-            - eu-central-1
           description: Name of the EC2 instance to be created.
         region:
           title: AWS Region
           type: string
+          enum:
+            - us-east-1
+            - us-west-2
+            - eu-central-1
         features:
           title: Features to Enable
           type: array
