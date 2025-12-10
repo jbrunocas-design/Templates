@@ -13,6 +13,7 @@ spec:
       required:
         - instanceName
         - region
+#        - features
         - repoDestination
       properties:
         instanceName:
@@ -26,17 +27,17 @@ spec:
             - us-east-1
             - us-west-2
             - eu-central-1
-        features:
-          title: Features to Enable
-          type: array
-          items:
-            type: string
-            enum:
-              - EC2
-              - S3
-              - RDS
-          uniqueItems: true
-          description: Select one or more features to enable.
+#        features:
+#          title: Features to Enable
+#          type: array
+#          items:
+#            type: string
+#            enum:
+#              - EC2
+#              - S3
+#              - RDS
+#          uniqueItems: true
+#          description: Select one or more features to enable.
         repoDestination:
           title: New Repository
           type: string
@@ -63,6 +64,18 @@ spec:
       input:
         url: https://github.com/jbrunocas-design/template-1/tree/main
         targetPath: "./"
+        values: 
+          InstanceName: ${{ parameters.instanceName }}
+          Region: ${{ parameters.region }}
+          repoUrl: ${{ parameters.repoDestination }}
+          
+    - id: publishGithub
+      name: Publish to GitHub
+      if: ${{ parameters.repoDestination | parseRepoUrl | pick('host') == 'github.com'}}
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoDestination }}
+        token: ${{ secrets.USER_OAUTH_TOKEN }} 
   output:
     links:
       - title: Repository
