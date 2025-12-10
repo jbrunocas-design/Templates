@@ -7,4 +7,4 @@ spec:
   targets:
     - ./template1-create-repo/template.yaml
     - ./template2-pull-edit-push-1/template.yaml
-    #- ./template-cookiecutter/template.yaml
+    - ./template3-aws1/template.yaml
