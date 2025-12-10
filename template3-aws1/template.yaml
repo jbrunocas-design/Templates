@@ -35,7 +35,12 @@ spec:
                   - write_repository
 
   steps:
-        
+    - id: fetchBase
+      name: Fetch base repo
+      action: fetch:plain
+      input:
+        url: https://github.com/jbrunocas-design/template-1/tree/main
+        targetPath: "./"
   output:
     links:
       - title: Repository
