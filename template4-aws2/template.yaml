@@ -1,0 +1,113 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: aws-instances
+  title: Create a new AWS Resource (EC2, S3, RDS)
+  description: This template UI asks user for config and creates a new AWS resource (EC2, S3, or RDS).
+spec:
+  owner: jbrunocas-design
+  type: documentation
+
+  parameters:
+    - title: AWS Resource
+      required:
+        - resourceType
+        - region
+        - repoDestination
+      properties:
+        resourceType:
+          title: AWS Resource Type
+          type: string
+          enum:
+            - EC2
+            - S3
+            - RDS
+          description: Select the AWS resource to create.
+        region:
+          title: AWS Region
+          type: string
+          enum:
+            - us-east-1
+            - us-west-2
+            - eu-central-1
+        # EC2 parameters
+        instanceName:
+          title: EC2 Instance Name
+          type: string
+          description: Name of the EC2 instance to be created.
+          ui:field: If
+          ui:options:
+            condition: "${{ parameters.resourceType == 'EC2' }}"
+        # S3 parameters
+        bucketName:
+          title: S3 Bucket Name
+          type: string
+          description: Name of the S3 bucket to be created.
+          ui:field: If
+          ui:options:
+            condition: "${{ parameters.resourceType == 'S3' }}"
+        # RDS parameters
+        dbInstanceIdentifier:
+          title: RDS Instance Identifier
+          type: string
+          description: Identifier for the RDS instance.
+          ui:field: If
+          ui:options:
+            condition: "${{ parameters.resourceType == 'RDS' }}"
+        dbEngine:
+          title: RDS Engine
+          type: string
+          enum:
+            - mysql
+            - postgres
+            - mariadb
+          description: Database engine for RDS.
+          ui:field: If
+          ui:options:
+            condition: "${{ parameters.resourceType == 'RDS' }}"
+        repoDestination:
+          title: New Repository
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+              - gitlab.com
+            requestUserCredentials:
+              secretsKey: USER_OAUTH_TOKEN
+              additionalScopes:
+                github:
+                  - repo
+                  - workflow
+                gitlab:
+                  - api
+                  - read_user
+                  - write_repository
+
+  steps:
+    - id: fetchBase
+      name: Fetch base repo
+      action: fetch:template
+      input:
+        url: https://github.com/jbrunocas-design/aws-scaffolding
+        targetPath: "./"
+        values: 
+          ResourceType: ${{ parameters.resourceType }}
+          InstanceName: ${{ parameters.instanceName }}
+          BucketName: ${{ parameters.bucketName }}
+          DBInstanceIdentifier: ${{ parameters.dbInstanceIdentifier }}
+          DBEngine: ${{ parameters.dbEngine }}
+          Region: ${{ parameters.region }}
+          repoUrl: ${{ parameters.repoDestination }}
+
+    - id: publishGithub
+      name: Publish to GitHub
+      if: ${{ parameters.repoDestination | parseRepoUrl | pick('host') == 'github.com'}}
+      action: publish:github
+      input:
+        repoUrl: ${{ parameters.repoDestination }}
+        token: ${{ secrets.USER_OAUTH_TOKEN }} 
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps.publish.output.remoteUrl }}
