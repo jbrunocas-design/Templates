@@ -34,7 +34,7 @@ spec:
                   - read_user
                   - write_repository
 
-  steps:
+#  steps:
         
   output:
     links:
